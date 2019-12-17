@@ -1,0 +1,7 @@
+Utilities
+
+Capacitor:
+    npm install
+    npx cap init
+        definir nombre y nombre de package
+    npx cap add <plataforma>
