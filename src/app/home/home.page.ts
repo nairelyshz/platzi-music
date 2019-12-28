@@ -18,14 +18,16 @@ export class HomePage {
   songs: any[] = [];
   albums: any[] = [];
   artists: any[] = [];
-  song = {
+  song: {
+    preview_url: string;
+    playing: boolean;
+    name: string;
+  } = {
     preview_url: '',
     playing: false,
-    currentTime: 0
+    name: ''
   };
-  currentSong = {
-    currentTime: 0
-  };
+  currentSong: HTMLAudioElement;
   newTime;
   constructor(
     private musicService: PlatziMusicService,
@@ -37,10 +39,11 @@ export class HomePage {
       this.artists = this.musicService.getArtists();
       console.log(this.artists);
       this.songs = newReleases.albums.items.filter(
-        e => e.album_type === 'single'
+        e => e.album_type == "single"
       );
       this.albums = newReleases.albums.items.filter(
-        e => e.album_type === 'album'      );
+        e => e.album_type == "album"
+      );
     });
   }
   async showSongs(artist) {
@@ -63,7 +66,7 @@ export class HomePage {
   play() {
     this.currentSong = new Audio(this.song.preview_url);
     this.currentSong.play();
-    this.currentSong.addEventListener('timeupdate', () => {
+    this.currentSong.addEventListener("timeupdate", () => {
       this.newTime =
         (this.currentSong.currentTime * (this.currentSong.duration / 10)) / 100;
     });
@@ -74,18 +77,18 @@ export class HomePage {
     this.song.playing = false;
   }
 
-  parseTime(time = '1.00') {
+  parseTime(time: number) {
     if (time) {
-      const partTime = parseInt(time.toString().split('.')[0], 10);
+      const partTime = parseInt(time.toString().split(".")[0], 10);
       let minutes = Math.floor(partTime / 60).toString();
-      if (minutes.length === 1) {
-        minutes = '0' + minutes;
+      if (minutes.length == 1) {
+        minutes = "0" + minutes;
       }
       let seconds = (partTime % 60).toString();
-      if (seconds.length === 1) {
-        seconds = '0' + seconds;
+      if (seconds.length == 1) {
+        seconds = "0" + seconds;
       }
-      return minutes + ':' + seconds;
+      return minutes + ":" + seconds;
     }
   }
 }
